@@ -1,0 +1,6 @@
+/vendor/
+/var
+!.gitkeep
+config/config.local.neon
+.env
+

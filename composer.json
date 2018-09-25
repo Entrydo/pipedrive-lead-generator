@@ -1,0 +1,15 @@
+{
+    "name": "entrydo/pipedrive-lead-generator",
+    "type": "project",
+    "require": {
+        "php": ">=7.1.0",
+        "brandembassy/slim-nette-extension": "^2.0"
+    },
+    "license": "Proprietary",
+    "authors": [
+        {
+            "name": "Jan Mikeš",
+            "email": "jan@entrydo.com"
+        }
+    ]
+}
