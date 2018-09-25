@@ -4,7 +4,9 @@
 - [ ] Dockerfile
 - [ ] Authentication of requests
 - [ ] Monolog logger middleware
-- [ ] Middleware that will handle OPTIONS/cors requests
+- [ ] Middleware that will handle OPTIONS/cors requests - Do we need it?
+- [ ] Request body validator (email, phone as well)
+- [ ] Generate documentation automatically?
 - [ ] Create project package
     - [ ] PHPStan
     - [ ] Coding standard
