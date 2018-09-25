@@ -1,5 +1,6 @@
 extensions:
 	slimApi: BrandEmbassy\Slim\DI\SlimApiExtension
+	env: wodCZ\NetteDotenv\DotEnvExtension
 
 slimApi:
 	apiDefinitionKey: api
@@ -12,12 +13,15 @@ services:
 	- Entrydo\PipedriveLeadGenerator\Lead\GenerateLeadAction
 
 parameters:
+	pipedrive:
+		apiKey: @env::get(PIPEDRIVE_API_KEY)
+
 	api:
 		handlers:
 			error: Entrydo\PipedriveLeadGenerator\ErrorHandler\ApiErrorHandler
 
 		routes:
-			api:
+			"api":
 				"1.0":
 					'/lead':
 						post:

@@ -5,7 +5,8 @@
         "php": ">=7.1.0",
         "brandembassy/slim-nette-extension": "^2.0",
         "nette/bootstrap": "^2.4",
-        "tracy/tracy": "^2.5"
+        "tracy/tracy": "^2.5",
+        "wodcz/nette-dotenv": "^2.0"
     },
     "autoload": {
         "psr-4": {
