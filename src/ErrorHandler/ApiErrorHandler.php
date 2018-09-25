@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Entrydo\PipedriveLeadGenerator\ErrorHandler;
+namespace Entrydo\Pipedrive\ErrorHandler;
 
 use BrandEmbassy\Slim\ErrorHandler;
 use BrandEmbassy\Slim\Request\RequestInterface;

@@ -9,8 +9,9 @@ slimApi:
 			removeDefaultHandlers: true
 
 services:
-	- Entrydo\PipedriveLeadGenerator\ErrorHandler\ApiErrorHandler
-	- Entrydo\PipedriveLeadGenerator\Lead\GenerateLeadAction
+	- Entrydo\Pipedrive\ErrorHandler\ApiErrorHandler
+	- Entrydo\Pipedrive\Lead\GenerateLeadAction
+	- Devio\Pipedrive\Pipedrive(%pipedrive.apiKey%)
 
 parameters:
 	pipedrive:
@@ -18,11 +19,11 @@ parameters:
 
 	api:
 		handlers:
-			error: Entrydo\PipedriveLeadGenerator\ErrorHandler\ApiErrorHandler
+			error: Entrydo\Pipedrive\ErrorHandler\ApiErrorHandler
 
 		routes:
 			"api":
 				"1.0":
 					'/lead':
 						post:
-							service: Entrydo\PipedriveLeadGenerator\Lead\GenerateLeadAction
+							service: Entrydo\Pipedrive\Lead\GenerateLeadAction

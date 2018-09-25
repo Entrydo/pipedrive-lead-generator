@@ -1,6 +1,6 @@
 <?php declare (strict_types=1);
 
-namespace Entrydo\PipedriveLeadGenerator\Lead;
+namespace Entrydo\Pipedrive\Lead;
 
 use BrandEmbassy\Slim\ActionHandler;
 use BrandEmbassy\Slim\Request\RequestInterface;
