@@ -1,13 +1,20 @@
 <?php declare(strict_types=1);
 
-use Nette\DI\Compiler;
-use Nette\DI\ContainerLoader;
+use Nette\Configurator;
+use Tracy\Debugger;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$loader = new ContainerLoader(__DIR__ . '/../var/temp');
-$class = $loader->load(function (Compiler $compiler) {
-	$compiler->loadConfig(__DIR__ . '/../config/config.neon');
-});
+$configurator = new Configurator();
+$configurator->setTempDirectory(__DIR__ . '/../var/temp');
+$configurator->addConfig(__DIR__ . '/../config/config.neon');
 
-return new $class;
+$localConfig = __DIR__ . '/../config/config.local.neon';
+if (is_file($localConfig)) {
+	$configurator->addConfig($localConfig);
+}
+
+$configurator->enableDebugger(__DIR__ . '/../var/log');
+Debugger::$strictMode = true;
+
+return $configurator->createContainer();

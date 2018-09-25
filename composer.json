@@ -3,7 +3,14 @@
     "type": "project",
     "require": {
         "php": ">=7.1.0",
-        "brandembassy/slim-nette-extension": "^2.0"
+        "brandembassy/slim-nette-extension": "^2.0",
+        "nette/bootstrap": "^2.4",
+        "tracy/tracy": "^2.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Entrydo\\PipedriveLeadGenerator\\": "src"
+        }
     },
     "license": "Proprietary",
     "authors": [

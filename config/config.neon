@@ -1,0 +1,24 @@
+extensions:
+	slimApi: BrandEmbassy\Slim\DI\SlimApiExtension
+
+slimApi:
+	apiDefinitionKey: api
+	slimConfiguration:
+		settings:
+			removeDefaultHandlers: true
+
+services:
+	- Entrydo\PipedriveLeadGenerator\ErrorHandler\ApiErrorHandler
+	- Entrydo\PipedriveLeadGenerator\Lead\GenerateLeadAction
+
+parameters:
+	api:
+		handlers:
+			error: Entrydo\PipedriveLeadGenerator\ErrorHandler\ApiErrorHandler
+
+		routes:
+			api:
+				"1.0":
+					'/lead':
+						post:
+							service: Entrydo\PipedriveLeadGenerator\Lead\GenerateLeadAction
