@@ -6,7 +6,8 @@
         "brandembassy/slim-nette-extension": "^2.0",
         "nette/bootstrap": "^2.4",
         "tracy/tracy": "^2.5",
-        "wodcz/nette-dotenv": "^2.0"
+        "wodcz/nette-dotenv": "^2.0",
+        "devio/pipedrive": "^1.1"
     },
     "autoload": {
         "psr-4": {
