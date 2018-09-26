@@ -12,6 +12,7 @@ services:
 	- Entrydo\Pipedrive\ErrorHandler\ApiErrorHandler
 	- Entrydo\Pipedrive\Lead\GenerateLeadAction
 	- Devio\Pipedrive\Pipedrive(%pipedrive.apiKey%)
+	- Entrydo\Pipedrive\CORS\CORSMiddleware
 
 parameters:
 	pipedrive:
