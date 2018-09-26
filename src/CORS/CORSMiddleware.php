@@ -10,6 +10,9 @@ class CORSMiddleware implements Middleware
 {
 	public function __invoke(RequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
 	{
+		/** @var ResponseInterface $response */
+		$response = $next($request, $response);
+
 		return $response
 			->withHeader('Access-Control-Allow-Origin', '*')
 			->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, X-Authorization, Accept, Content-Type, Origin, X-Origin, Accept-Language')
