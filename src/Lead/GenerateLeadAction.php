@@ -11,6 +11,7 @@ use Devio\Pipedrive\Resources\Deals;
 use Devio\Pipedrive\Resources\Organizations;
 use Devio\Pipedrive\Resources\Persons;
 use Devio\Pipedrive\Resources\SearchResults;
+use Entrydo\Pipedrive\CustomField\DealCheckCustomField;
 use Entrydo\Pipedrive\CustomField\DealCustomField;
 use Entrydo\Pipedrive\CustomField\OrganizationCustomField;
 use Nette\Utils\Json;
@@ -42,7 +43,22 @@ class GenerateLeadAction implements ActionHandler
 	 *		"expectedVisitors": 1000,
 	 *		"email": "jan@entrydo.com",
 	 *		"phone": "+420773686207",
-	 *		"eventDate": "2018-09-30"
+	 *		"eventDate": "2018-09-30",
+	 * 		"checks":{
+	 *			"premiumCheckIn": true,
+     *			"dq": true,
+	 *			"badges": true,
+	 *			"stats": true,
+	 *			"eTicketing": true,
+	 *			"ticketing": true,
+	 *			"guestImport": true,
+	 *			"workshops": true,
+	 *			"hostesses": true,
+	 *			"hw": true,
+	 *			"networking": true,
+	 *			"orderForm": true,
+	 *			"integration": true
+	 *		}
 	 *	}
 	 */
 	public function __invoke(RequestInterface $request, ResponseInterface $response, array $arguments = []): ResponseInterface
@@ -51,6 +67,7 @@ class GenerateLeadAction implements ActionHandler
 
 		$organizationId = $this->getOrganizationId($data->companyId, $data->companyName);
 		$personId = $this->getPersonId($organizationId, $data->name, $data->email, $data->phone);
+		$checks = $this->mapChecks($data->checks);
 
 		$this->createDeal(
 			$data->eventName,
@@ -58,7 +75,8 @@ class GenerateLeadAction implements ActionHandler
 			$organizationId,
 			$data->expectedVisitors,
 			$data->web,
-			$data->eventDate
+			$data->eventDate,
+			$checks
 		);
 
 		return $response->withJson(['status' => 'ok'], 201);
@@ -122,13 +140,44 @@ class GenerateLeadAction implements ActionHandler
 	}
 
 
+	private function mapChecks(\stdClass $checks): array
+	{
+		$mapping = [
+			DealCheckCustomField::PREMIUM_CHECK_IN => 'premiumCheckIn',
+			DealCheckCustomField::DIGITAL_QUEUE => 'dq',
+			DealCheckCustomField::BADGES => 'badges',
+			DealCheckCustomField::STATISTICS => 'stats',
+			DealCheckCustomField::ONLINE_TICKETING => 'eTicketing',
+			DealCheckCustomField::ON_SITE_TICKETING => 'ticketing',
+			DealCheckCustomField::IMPORTS => 'guestImport',
+			DealCheckCustomField::WORKSHOPS => 'workshops',
+			DealCheckCustomField::HOSTESS => 'hostesses',
+			DealCheckCustomField::HARDWARE => 'hw',
+			DealCheckCustomField::NETWORKING => 'networking',
+			DealCheckCustomField::ORDER_FORM => 'orderForm',
+			DealCheckCustomField::CUSTOM_INTEGRATION => 'integration',
+		];
+
+		$filledChecks = [];
+
+		foreach ($mapping as $checkId => $check) {
+			if (isset($checks->{$check}) && $checks->{$check} === true) {
+				$filledChecks[] = $checkId;
+			}
+		}
+
+		return $filledChecks;
+	}
+
+
 	private function createDeal(
 		string $title,
 		int $personId,
 		int $organizationId,
 		int $attendance,
 		string $website,
-		string $date
+		string $date,
+		array $checks
 	): Response
 	{
 		return $this->pipedrive->deals()->add([
@@ -138,6 +187,7 @@ class GenerateLeadAction implements ActionHandler
 			DealCustomField::ATTENDANCE => $attendance,
 			DealCustomField::WEBSITE => $website,
 			DealCustomField::EVENT_DATE => $date,
+			DealCustomField::CHECKS => $checks,
 		]);
 	}
 }

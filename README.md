@@ -3,7 +3,7 @@
 ## TODO
 - [ ] Dockerfile
 - [ ] Authentication of requests
-- [ ] Monolog logger middleware
+- [ ] Monolog logger middleware (SENTRY VOLE)
 - [ ] Middleware that will handle OPTIONS/cors requests - Do we need it?
 - [ ] Request body validator (email, phone as well)
 - [ ] Generate documentation automatically?
