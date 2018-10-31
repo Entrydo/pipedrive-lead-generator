@@ -10,7 +10,7 @@ slimApi:
 
 services:
 	- Entrydo\Pipedrive\ErrorHandler\ApiErrorHandler
-	- Entrydo\Pipedrive\Lead\GenerateLeadAction
+	- Entrydo\Pipedrive\Lead\SendLeadToPipedriveAction
 	- Devio\Pipedrive\Pipedrive(%pipedrive.apiKey%)
 	- Entrydo\Pipedrive\CORS\CORSMiddleware
 
@@ -27,4 +27,8 @@ parameters:
 				"1.0":
 					'/lead':
 						post:
-							service: Entrydo\Pipedrive\Lead\GenerateLeadAction
+							service: Entrydo\Pipedrive\Lead\SendLeadToPipedriveAction
+
+					'/interest':
+						post:
+							service: Entrydo\Pipedrive\Interest\SendInterestToPipedriveAction

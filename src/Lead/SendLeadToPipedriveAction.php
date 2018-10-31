@@ -7,16 +7,12 @@ use BrandEmbassy\Slim\Request\RequestInterface;
 use BrandEmbassy\Slim\Response\ResponseInterface;
 use Devio\Pipedrive\Http\Response;
 use Devio\Pipedrive\Pipedrive;
-use Devio\Pipedrive\Resources\Deals;
-use Devio\Pipedrive\Resources\Organizations;
-use Devio\Pipedrive\Resources\Persons;
-use Devio\Pipedrive\Resources\SearchResults;
 use Entrydo\Pipedrive\CustomField\DealCheckCustomField;
 use Entrydo\Pipedrive\CustomField\DealCustomField;
 use Entrydo\Pipedrive\CustomField\OrganizationCustomField;
 use Nette\Utils\Json;
 
-class GenerateLeadAction implements ActionHandler
+class SendLeadToPipedriveAction implements ActionHandler
 {
 	/**
 	 * @var Pipedrive
