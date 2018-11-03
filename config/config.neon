@@ -11,6 +11,7 @@ slimApi:
 services:
 	- Entrydo\Pipedrive\ErrorHandler\ApiErrorHandler
 	- Entrydo\Pipedrive\Lead\SendLeadToPipedriveAction
+	- Entrydo\Pipedrive\Interest\SendInterestToPipedriveAction
 	- Devio\Pipedrive\Pipedrive(%pipedrive.apiKey%)
 	- Entrydo\Pipedrive\CORS\CORSMiddleware
 
