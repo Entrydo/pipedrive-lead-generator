@@ -10,6 +10,8 @@ use Devio\Pipedrive\Pipedrive;
 use Entrydo\Pipedrive\CustomField\DealCheckCustomField;
 use Entrydo\Pipedrive\CustomField\DealCustomField;
 use Entrydo\Pipedrive\CustomField\OrganizationCustomField;
+use Entrydo\Pipedrive\Pipedrive\Exceptions\PersonNotFound;
+use Entrydo\Pipedrive\Pipedrive\GetPersonIdByEmail;
 use Nette\Utils\Json;
 
 class SendLeadToPipedriveAction implements ActionHandler
@@ -19,10 +21,16 @@ class SendLeadToPipedriveAction implements ActionHandler
 	 */
 	private $pipedrive;
 
+	/**
+	 * @var GetPersonIdByEmail
+	 */
+	private $getPersonIdByEmail;
 
-	public function __construct(Pipedrive $pipedrive)
+
+	public function __construct(Pipedrive $pipedrive, GetPersonIdByEmail $getPersonIdByEmail)
 	{
 		$this->pipedrive = $pipedrive;
+		$this->getPersonIdByEmail = $getPersonIdByEmail;
 	}
 
 
@@ -109,30 +117,18 @@ class SendLeadToPipedriveAction implements ActionHandler
 
 	private function getPersonId(int $organizationId, string $name, string $email, string $phone): int
 	{
-		// Search person by email
-		$personSearchResponse = $this->pipedrive->searchResults()->searchFromField(
-			$email,
-			'personField',
-			'email',
-			[
-				'return_item_ids' => 1,
-				'exact_match' => 1,
-			]
-		);
-		$personSearchResults = $personSearchResponse->getData();
+		try {
+			return $this->getPersonIdByEmail->__invoke($email);
+		} catch (PersonNotFound $e) {
+			$personAddResponse = $this->pipedrive->persons()->add([
+				'name' => $name,
+				'email' => $email,
+				'phone' => str_replace(' ', '', $phone),
+				'org_id' => $organizationId,
+			]);
 
-		if (\count($personSearchResults)) {
-			return $personSearchResults[0]->id;
+			return $personAddResponse->getData()->id;
 		}
-
-		$personAddResponse = $this->pipedrive->persons()->add([
-			'name' => $name,
-			'email' => $email,
-			'phone' => str_replace(' ', '', $phone),
-			'org_id' => $organizationId,
-		]);
-
-		return $personAddResponse->getData()->id;
 	}
 
 

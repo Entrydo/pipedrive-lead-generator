@@ -7,6 +7,8 @@ use BrandEmbassy\Slim\Request\RequestInterface;
 use BrandEmbassy\Slim\Response\ResponseInterface;
 use Devio\Pipedrive\Http\Response;
 use Devio\Pipedrive\Pipedrive;
+use Entrydo\Pipedrive\Pipedrive\Exceptions\PersonNotFound;
+use Entrydo\Pipedrive\Pipedrive\GetPersonIdByEmail;
 use Nette\Utils\Json;
 
 class SendInterestToPipedriveAction implements ActionHandler
@@ -21,11 +23,17 @@ class SendInterestToPipedriveAction implements ActionHandler
 	 */
 	private $stageId;
 
+	/**
+	 * @var GetPersonIdByEmail
+	 */
+	private $getPersonIdByEmail;
 
-	public function __construct(int $stageId, Pipedrive $pipedrive)
+
+	public function __construct(int $stageId, Pipedrive $pipedrive, GetPersonIdByEmail $getPersonIdByEmail)
 	{
 		$this->pipedrive = $pipedrive;
 		$this->stageId = $stageId;
+		$this->getPersonIdByEmail = $getPersonIdByEmail;
 	}
 
 
@@ -58,29 +66,17 @@ class SendInterestToPipedriveAction implements ActionHandler
 
 	private function getPersonId(string $name, string $phone, string $email): int
 	{
-		// Search person by email
-		$personSearchResponse = $this->pipedrive->searchResults()->searchFromField(
-			$email,
-			'personField',
-			'email',
-			[
-				'return_item_ids' => 1,
-				'exact_match' => 1,
-			]
-		);
-		$personSearchResults = $personSearchResponse->getData();
+		try {
+			return $this->getPersonIdByEmail->__invoke($email);
+		} catch (PersonNotFound $e) {
+			$personAddResponse = $this->pipedrive->persons()->add([
+				'name' => $name,
+				'email' => $email,
+				'phone' => str_replace(' ', '', $phone),
+			]);
 
-		if (\count($personSearchResults)) {
-			return $personSearchResults[0]->id;
+			return $personAddResponse->getData()->id;
 		}
-
-		$personAddResponse = $this->pipedrive->persons()->add([
-			'name' => $name,
-			'email' => $email,
-			'phone' => str_replace(' ', '', $phone),
-		]);
-
-		return $personAddResponse->getData()->id;
 	}
 
 

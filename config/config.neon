@@ -14,6 +14,7 @@ services:
 	- Entrydo\Pipedrive\Interest\SendInterestToPipedriveAction(%pipedrive.interestStageId%)
 	- Devio\Pipedrive\Pipedrive(%pipedrive.apiKey%)
 	- Entrydo\Pipedrive\CORS\CORSMiddleware
+	- Entrydo\Pipedrive\Pipedrive\GetPersonIdByEmail
 
 parameters:
 	pipedrive:
