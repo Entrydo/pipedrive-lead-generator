@@ -11,13 +11,14 @@ slimApi:
 services:
 	- Entrydo\Pipedrive\ErrorHandler\ApiErrorHandler
 	- Entrydo\Pipedrive\Lead\SendLeadToPipedriveAction
-	- Entrydo\Pipedrive\Interest\SendInterestToPipedriveAction
+	- Entrydo\Pipedrive\Interest\SendInterestToPipedriveAction(%pipedrive.interestStageId%)
 	- Devio\Pipedrive\Pipedrive(%pipedrive.apiKey%)
 	- Entrydo\Pipedrive\CORS\CORSMiddleware
 
 parameters:
 	pipedrive:
 		apiKey: @env::get(PIPEDRIVE_API_KEY)
+		interestStageId: 9
 
 	api:
 		handlers:
